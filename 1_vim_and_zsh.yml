@@ -1,0 +1,26 @@
+---
+
+- hosts: local
+  become: yes
+  tasks:
+    - name: Install vim
+      apt:
+        name: vim
+        state: latest
+    - name: Install zsh
+      apt:
+        name: zsh
+        state: latest
+    - name: Make zsh default
+      ansible.builtin.command: chsh -s /usr/bin/zsh
+    - name: Install curl
+      apt:
+        name: curl
+        state: latest
+    - name: Install Git
+      apt:
+        name: git
+        state: latest
+    - name: Configure git
+      ansible.builtin.shell: git config --global user.email {{ git_user_email|quote }} && git config --global user.name {{ git_user_name|quote }}
+
