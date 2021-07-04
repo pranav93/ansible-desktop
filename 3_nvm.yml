@@ -22,7 +22,7 @@
       state: present
       insertafter: EOF
       dest: ~/.zshrc
-      marker: "## add lines ANSIBLE MANAGED BLOCK ##"
+      marker: "## add lines for nvm ANSIBLE MANAGED BLOCK ##"
       content: |
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
