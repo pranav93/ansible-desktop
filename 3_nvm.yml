@@ -1,0 +1,29 @@
+---
+- hosts: local
+  tasks:
+  - name: Download nvm installation script
+    get_url:
+      url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh
+      dest: /tmp/
+      mode: 0755
+
+  - name: Execute nvm installation script
+    command: "./install.sh"
+    args:
+      chdir: /tmp/
+
+  - name: Install latest nodejs
+    shell: "source /home/{{ user }}/.nvm/nvm.sh && nvm install node"
+    args:
+      executable: /bin/bash
+
+  - name: Append nvm cmds
+    blockinfile:
+      state: present
+      insertafter: EOF
+      dest: ~/.zshrc
+      marker: "## add lines ANSIBLE MANAGED BLOCK ##"
+      content: |
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+        [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

@@ -3,24 +3,53 @@
 - hosts: local
   become: yes
   tasks:
-    - name: Install vim
+    - name: Install vim for debian
       apt:
         name: vim
         state: latest
-    - name: Install zsh
+      when: ansible_facts['os_family'] == 'Debian'
+    - name: Install vim for redhat
+      dnf:
+        name: vim
+        state: latest
+      when: ansible_facts['os_family'] == 'RedHat'
+    - name: Install zsh for debian
       apt:
         name: zsh
         state: latest
+      when: ansible_facts['os_family'] == 'Debian'
+    - name: Install zsh for redhat
+      dnf:
+        name: zsh
+        state: latest
+      when: ansible_facts['os_family'] == 'RedHat'
+    - name: Install util-linux-user for redhat
+      dnf:
+        name: util-linux-user
+        state: latest
+      when: ansible_facts['os_family'] == 'RedHat'
     - name: Make zsh default
       ansible.builtin.command: chsh -s /usr/bin/zsh
-    - name: Install curl
+    - name: Install curl for debian
       apt:
         name: curl
         state: latest
-    - name: Install Git
+      when: ansible_facts['os_family'] == 'Debian'
+    - name: Install curl for redhat
+      dnf:
+        name: curl
+        state: latest
+      when: ansible_facts['os_family'] == 'RedHat'
+    - name: Install Git for debian
       apt:
         name: git
         state: latest
+      when: ansible_facts['os_family'] == 'Debian'
+    - name: Install Git for redhat
+      dnf:
+        name: git
+        state: latest
+      when: ansible_facts['os_family'] == 'RedHat'
     - name: Configure git
       ansible.builtin.shell: git config --global user.email {{ git_user_email|quote }} && git config --global user.name {{ git_user_name|quote }}
 
