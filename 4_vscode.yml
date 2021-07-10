@@ -1,0 +1,24 @@
+---
+
+- hosts: local
+  become: yes
+  tasks:
+    - name: Import vscode key for RedHat
+      ansible.builtin.rpm_key:
+        key: https://packages.microsoft.com/keys/microsoft.asc
+      when: ansible_facts['os_family'] == 'RedHat'
+    - name: Add vscode repo for RedHat
+      copy:
+        dest: "/etc/yum.repos.d/vscode.repo"
+        content: |
+          [code]
+          name=Visual Studio Code
+          baseurl=https://packages.microsoft.com/yumrepos/vscode
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://packages.microsoft.com/keys/microsoft.asc"
+      when: ansible_facts['os_family'] == 'RedHat'
+    - name: Install the latest version of vscode for RedHat
+      dnf:
+        name: code
+        state: latest
